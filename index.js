@@ -12,18 +12,22 @@ passport.use(
       clientSecret: process.env.GOOGLESECRETCLIENT,
       callbackURL: '/auth/google/callback',
     },
-    (accessToken) => {
+    (accessToken, refreshToken, profile, done) => {
       console.log(accessToken);
     }
   )
 );
 
+// Ask user permission to access their google email
 app.get(
   '/auth/google',
   passport.authenticate('google', {
     scope: ['profile', 'email'],
   })
 );
+
+// grt the code sent by google
+app.get('/auth/google/callback', passport.authenticate('google'));
 
 const PORT = process.env.PORT || 5000;
 

@@ -1,33 +1,13 @@
 const express = require('express');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
+
+require('./services/passport');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLECLIENTID,
-      clientSecret: process.env.GOOGLESECRETCLIENT,
-      callbackURL: '/auth/google/callback',
-    },
-    (accessToken, refreshToken, profile, done) => {
-      console.log(accessToken);
-    }
-  )
-);
-
-// Ask user permission to access their google email
-app.get(
-  '/auth/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email'],
-  })
-);
-
-// grt the code sent by google
-app.get('/auth/google/callback', passport.authenticate('google'));
+// routes
+app.use('/auth', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 

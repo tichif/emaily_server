@@ -4,6 +4,11 @@ const mongoose = require('mongoose');
 
 const User = mongoose.model('User');
 
+// Serialize user
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
 passport.use(
   new GoogleStrategy(
     {

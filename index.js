@@ -16,7 +16,11 @@ const app = express();
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    keys: [process.env.COOKIE_KEY], // encrypt cookie
+    keys: [
+      process.env.NODE_ENV === 'production'
+        ? process.env.COOKIE_KEY_PROD
+        : process.env.COOKIE_KEY,
+    ], // encrypt cookie
   })
 );
 
@@ -25,11 +29,16 @@ app.use(passport.session());
 
 // Connect to DB
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: true,
-  })
+  .connect(
+    process.env.NODE_ENV === 'production'
+      ? process.env.MONGO_URI_PROD
+      : process.env.MONGO_URI,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: true,
+    }
+  )
   .then(() => {
     console.log('Database connected');
   })

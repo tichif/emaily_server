@@ -29,7 +29,7 @@ passport.use(
         process.env.NODE_ENV === 'production'
           ? process.env.GOOGLESECRETCLIENT_PROD
           : process.env.GOOGLESECRETCLIENT,
-      callbackURL: '/api/auth/google/callback',
+      callbackURL: '/auth/google/callback',
       proxy: true,
     },
     (accessToken, refreshToken, profile, done) => {

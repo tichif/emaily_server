@@ -30,6 +30,7 @@ passport.use(
           ? process.env.GOOGLESECRETCLIENT_PROD
           : process.env.GOOGLESECRETCLIENT,
       callbackURL: '/api/auth/google/callback',
+      proxy: true,
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOne({ googleId: profile.id })

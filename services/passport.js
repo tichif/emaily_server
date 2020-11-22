@@ -21,8 +21,14 @@ passport.deserializeUser((id, done) => {
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLECLIENTID,
-      clientSecret: process.env.GOOGLESECRETCLIENT,
+      clientID:
+        process.env.NODE_ENV === 'production'
+          ? process.env.GOOGLECLIENTID_PROD
+          : process.env.GOOGLECLIENTID,
+      clientSecret:
+        process.env.NODE_ENV === 'production'
+          ? process.env.GOOGLESECRETCLIENT_PROD
+          : process.env.GOOGLESECRETCLIENT,
       callbackURL: '/api/auth/google/callback',
     },
     (accessToken, refreshToken, profile, done) => {

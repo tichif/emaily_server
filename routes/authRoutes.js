@@ -11,8 +11,14 @@ router.get(
   })
 );
 
-// get the code sent by google
-router.get('/auth/google/callback', passport.authenticate('google'));
+// get the code sent by google and redirect to the browser
+router.get(
+  '/auth/google/callback',
+  passport.authenticate('google'),
+  (req, res) => {
+    res.redirect('/surveys');
+  }
+);
 
 // logout user
 router.get('/api/logout', (req, res) => {

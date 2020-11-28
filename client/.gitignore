@@ -1,3 +1,6 @@
 built
 
 .env
+
+.env.development
+.env.production

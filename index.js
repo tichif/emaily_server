@@ -8,6 +8,7 @@ require('dotenv').config();
 
 // Models
 require('./models/User');
+require('./models/Survey');
 
 require('./services/passport');
 const authRoutes = require('./routes/authRoutes');

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 require('dotenv').config();
 
 // Models
@@ -11,6 +12,8 @@ require('./services/passport');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
+
+app.use(bodyParser.json());
 
 // Using cookie
 app.use(
@@ -46,6 +49,7 @@ mongoose
 
 // routes
 app.use('/', authRoutes);
+require('./routes/billingRoutes')(app);
 
 const PORT = process.env.PORT || 5000;
 

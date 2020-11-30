@@ -52,6 +52,7 @@ mongoose
 // routes
 app.use('/', authRoutes);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets

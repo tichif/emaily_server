@@ -5,6 +5,12 @@ const helpers = sendGrid.mail;
 class Mailer extends helpers.Mail {
   constructor({ subject, recipients }, content) {
     super();
+
+    this.sgApi = sendGrid(
+      process.env.NODE_ENV === 'production'
+        ? process.env.SENDGRID_KEY_PROD
+        : process.env.SENDGRID_KEY
+    );
     this.from_email = new helpers.Email('charlby5@gmail.com');
     this.subject = subject;
     this.body = new helpers.Content('text/html', content);
@@ -40,6 +46,18 @@ class Mailer extends helpers.Mail {
     });
 
     this.addPersonalization(personalize);
+  }
+
+  // Send Mail
+  async send() {
+    const request = this.sgApi.emptyRequest({
+      method: 'POST',
+      path: 'v3/mail/send',
+      body: this.toJSON(),
+    });
+
+    const response = await this.sgApi.API(request);
+    return response;
   }
 }
 

@@ -22,9 +22,24 @@ module.exports = (app) => {
       dateSent: Date.now(),
     });
 
-    // Send email
-    const mailer = new Mailer(survey, surveyTemplate(survey));
-    await mailer.send();
-    // await survey.save();
+    try {
+      // Send email
+      const mailer = new Mailer(survey, surveyTemplate(survey));
+      await mailer.send();
+
+      await survey.save();
+
+      // Charge the user for the survey
+      req.user.credits -= 1;
+      const user = await req.user.save();
+
+      res.send(user);
+    } catch (err) {
+      res.status(422).send(err);
+    }
+  });
+
+  app.get('/api/surveys/feedback', (req, res) => {
+    res.send('Thanks for give us your feedback');
   });
 };

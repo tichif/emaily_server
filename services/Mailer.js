@@ -50,14 +50,19 @@ class Mailer extends helpers.Mail {
 
   // Send Mail
   async send() {
-    const request = this.sgApi.emptyRequest({
-      method: 'POST',
-      path: 'v3/mail/send',
-      body: this.toJSON(),
-    });
-
-    const response = await this.sgApi.API(request);
-    return response;
+    try {
+      const request = this.sgApi.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: this.toJSON(),
+      });
+      console.log('request', request);
+      const response = await this.sgApi.API(request);
+      console.log('res', response);
+      return response;
+    } catch (error) {
+      console.log(error.response.body);
+    }
   }
 }
 

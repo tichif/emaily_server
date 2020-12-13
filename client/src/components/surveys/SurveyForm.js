@@ -4,6 +4,7 @@ import { reduxForm, Field } from 'redux-form';
 import _ from 'lodash'
 
 import SurveyField from './SurveyField'
+import validateEmails from '../../utils/validateEmails'
 
 const FIELDS = [
   {
@@ -52,10 +53,18 @@ class SurveyForm extends Component {
 
 function validate (values) {
   const errors = {};
+  
+  // Validate emails
+  errors.emails = validateEmails(values.emails || '')
 
-  if(!values.title){
-    errors.title = "You must provide a title !"
-  }
+  // Check if there values in the input
+  _.each(FIELDS, ({ name }) => {
+    if(!values[name]){
+      errors[name] = "You must provide a value !"
+    }
+  })
+
+
   return errors;
 }
 

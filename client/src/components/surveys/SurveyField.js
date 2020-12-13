@@ -6,6 +6,9 @@ class SurveyField extends Component {
       <div>
         <label htmlFor={this.props.label}>{this.props.label}</label>
         <input {...this.props.input} />
+        {
+          this.props.meta.touched && this.props.meta.error
+        }
       </div>
     )
   }

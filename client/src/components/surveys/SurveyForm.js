@@ -5,29 +5,7 @@ import _ from 'lodash'
 
 import SurveyField from './SurveyField'
 import validateEmails from '../../utils/validateEmails'
-
-const FIELDS = [
-  {
-    id : 1,
-    label : 'Survey Title',
-    name : 'title'
-  },
-  {
-    id : 2,
-    label : 'Subject Line',
-    name : 'subject'
-  },
-  {
-    id : 3,
-    label : 'Email Body',
-    name : 'body'
-  },
-  {
-    id : 4,
-    label : 'Recipients List',
-    name : 'emails'
-  },
-]
+import FIELDS from './formFields'
 
 class SurveyForm extends Component {
   renderFields(){
@@ -71,4 +49,5 @@ function validate (values) {
 export default reduxForm({
   validate ,
   form: 'surveyForm',
+  destroyOnUnmount: false
 })(SurveyForm);

@@ -33,7 +33,7 @@ function validate (values) {
   const errors = {};
   
   // Validate emails
-  errors.emails = validateEmails(values.emails || '')
+  errors.recipients = validateEmails(values.recipients || '')
 
   // Check if there values in the input
   _.each(FIELDS, ({ name }) => {

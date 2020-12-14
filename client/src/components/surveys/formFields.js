@@ -17,6 +17,6 @@ export default [
   {
     id: 4,
     label: 'Recipients List',
-    name: 'emails',
+    name: 'recipients',
   },
 ];

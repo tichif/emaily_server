@@ -11,14 +11,14 @@ module.exports = (survey) => {
               process.env.NODE_ENV === 'production'
                 ? process.env.REDIRECT_DOMAIN_PROD
                 : process.env.REDIRECT_DOMAIN
-            }/api/surveys/feedback">Yes</a>
+            }/api/surveys/${survey.id}/yes">Yes</a>
           </div>
           <div>
             <a href="${
               process.env.NODE_ENV === 'production'
                 ? process.env.REDIRECT_DOMAIN_PROD
                 : process.env.REDIRECT_DOMAIN
-            }/api/surveys/feedback">No</a>
+            }/api/surveys/${survey.id}/no">No</a>
           </div>
         </div>
       </body>

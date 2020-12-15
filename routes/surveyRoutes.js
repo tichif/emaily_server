@@ -43,6 +43,13 @@ module.exports = (app) => {
     }
   });
 
+  app.get('/api/surveys', requireLogin, async (req, res) => {
+    const surveys = await Survey.find({ _user: req.user }).select(
+      '-recipients'
+    );
+    res.send(surveys);
+  });
+
   app.get('/api/surveys/:surveyId/:choice', (req, res) => {
     res.send('Thanks for give us your feedback');
   });

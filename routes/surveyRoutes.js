@@ -61,7 +61,14 @@ module.exports = (app) => {
         };
       }
     });
-    console.log(events);
+    // Delete all undefined values in the array
+    const compactEvents = _.compact(events);
+
+    // Delete all duplicate data
+    const uniqueEvents = _.uniqBy(compactEvents, 'email', 'surveyId');
+
+    console.log(uniqueEvents);
+
     res.send({});
   });
 };

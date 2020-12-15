@@ -48,26 +48,26 @@ module.exports = (app) => {
   });
 
   app.post('/api/surveys/webhooks', (req, res) => {
-    const events = _.map(req.body, ({ url, email }) => {
-      const pathName = new URL(url).pathname;
+    const parser = new Path('/api/surveys/:surveyId/:choice');
 
-      const parser = new Path('/api/surveys/:surveyId/:choice');
-      const match = parser.test(pathName);
-      if (match) {
-        return {
-          email,
-          surveyId: match.surveyId,
-          choice: match.choice,
-        };
-      }
-    });
-    // Delete all undefined values in the array
-    const compactEvents = _.compact(events);
+    const events = _.chain(req.body)
+      .map(({ url, email }) => {
+        const match = parser.test(new URL(url).pathname);
+        if (match) {
+          return {
+            email,
+            surveyId: match.surveyId,
+            choice: match.choice,
+          };
+        }
+      })
+      // Delete all undefined values in the array
+      .compact()
+      // Delete all duplicate data
+      .uniqBy('email', 'surveyId')
+      .value();
 
-    // Delete all duplicate data
-    const uniqueEvents = _.uniqBy(compactEvents, 'email', 'surveyId');
-
-    console.log(uniqueEvents);
+    console.log(events);
 
     res.send({});
   });

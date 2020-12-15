@@ -50,7 +50,7 @@ module.exports = (app) => {
   app.post('/api/surveys/webhooks', (req, res) => {
     const parser = new Path('/api/surveys/:surveyId/:choice');
 
-    const events = _.chain(req.body)
+    _.chain(req.body)
       .map(({ url, email }) => {
         const match = parser.test(new URL(url).pathname);
         if (match) {
@@ -65,9 +65,22 @@ module.exports = (app) => {
       .compact()
       // Delete all duplicate data
       .uniqBy('email', 'surveyId')
+      // update data
+      .each(({ email, surveyId, choice }) => {
+        Survey.updateOne(
+          {
+            _id: surveyId,
+            recipients: {
+              $elemMatch: { email: email, responded: false },
+            },
+          },
+          {
+            $inc: { [choice]: 1 },
+            $set: { 'recipients.$.responded': true },
+          }
+        ).exec();
+      })
       .value();
-
-    console.log(events);
 
     res.send({});
   });

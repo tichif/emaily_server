@@ -43,7 +43,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get('/api/surveys/feedback', (req, res) => {
+  app.get('/api/surveys/:surveyId/:choice', (req, res) => {
     res.send('Thanks for give us your feedback');
   });
 
@@ -77,6 +77,7 @@ module.exports = (app) => {
           {
             $inc: { [choice]: 1 },
             $set: { 'recipients.$.responded': true },
+            lastResponded: new Date(),
           }
         ).exec();
       })
